@@ -5,6 +5,6 @@ for w in words:
 
 print("--------------------")
 
-#for range example
-for i in range(1,10,2):
+# for range example
+for i in range(1, 10, 2):
     print(i)
