@@ -1,6 +1,7 @@
 import numpy as np
 x = np.array([1, 2, 3])
 print(x)
+print()
 
 y = np.arange(10) # like Python's range, but returns an array
 print(y)

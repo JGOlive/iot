@@ -7,6 +7,6 @@ def fib(n): # write Fibonacci series up to n
         a,b = b, a+b
     print()
 
-n = 10
+n = 100
 
 fib(n)
