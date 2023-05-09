@@ -7,7 +7,7 @@ df = pd.read_csv("EURUSD_Daily_Ask_2018.12.31_2019.10.05v2.csv")
 # não para ser utilizado
 time_test = pd.to_datetime(df["Time (UTC)"],format='%Y.%m.%d %H:%M:%S')
 
-#  avg and standard deviation de close
+#  avg and standard deviation de close adda
 
 mean_close = df["Close"].mean()
 std_close = df["Close"].std()
