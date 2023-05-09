@@ -11,15 +11,28 @@ time_test = pd.to_datetime(df["Time (UTC)"],format='%Y.%m.%d %H:%M:%S')
 
 mean_close = df["Close"].mean()
 std_close = df["Close"].std()
-threshold = 2
 
+#Threshold outliers
+'''
+threshold = 1
+df["k"] = abs(mean_close - df["Close"])/std_close
+df1 = df[df['k'] <= threshold]
+'''
+##################
+
+threshold = 1
 df["k"] = abs(mean_close - df["Close"])/std_close
 
-df1 = df[df['k'] <= 2]
+df_shifted = df.shift()
+
+df1 = df.where(df['k'] <= threshold, df_shifted)
+
+##################
+
 
 plt.figure()
 plt.subplot(211)
-plt.plot(df["Time (UTC)"], df["k"])
+plt.plot(df1["Time (UTC)"], df1["k"])
 
 plt.subplot(212)
 plt.plot(df1["Time (UTC)"], df1["Close"])
