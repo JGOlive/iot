@@ -36,7 +36,7 @@ haberman_data_train, haberman_data_valtest, haberman_target_train, haberman_targ
 haberman_data_val, haberman_data_test, haberman_target_val, haberman_target_test = train_test_split(haberman_data,haberman_target, test_size = 0.5, random_state = haberman_rs)
     ## iris
 
-# Test
+# Validation
 
 # Training using GaussianNB
     ## haberman (Linear SVC, if not working, KNeighbors)
