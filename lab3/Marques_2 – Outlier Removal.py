@@ -14,11 +14,11 @@ mean_close = df["Close"].mean()
 std_close = df["Close"].std()
 
 # Threshold outliers
-'''
+
 threshold = 1
 df["k"] = abs(mean_close - df["Close"])/std_close
 df1 = df[df['k'] <= threshold]
-'''
+
 ##################
 # trocar valor por anterior
 '''
@@ -30,7 +30,7 @@ df_shifted = df.shift()
 df1 = df.where(df['k'] <= threshold, df_shifted)
 '''
 ##################
-
+'''
 threshold = 1
 
 # Calculate the 'k' column
@@ -45,6 +45,7 @@ df1 = df.where(~mask, np.nan)
 # Interpolate missing values
 df1 = df1.interpolate()
 
+'''
 ###
 
 plt.figure()
