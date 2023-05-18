@@ -17,7 +17,7 @@ sales_data = pd.read_csv("WA_Fn-UseC_-Sales-Win-Loss.csv")
 #print(sales_data.head(n=2))
 #print(sales_data.tail(n=2))
 #print(sales_data.dtypes)
-
+'''  plot
 sns.set(style="whitegrid", color_codes=True)
 
 #setting the plot size for all plots
@@ -30,4 +30,13 @@ sns.countplot(x='Route To Market',data=sales_data,hue = 'Opportunity Result')
 sns.despine(offset=10, trim=True)
 
 # display the plotplt.show()
+plt.show()
+'''
+
+#Violin plot
+sns.set(rc={'figure.figsize':(16.7,13.27)})
+
+sns.violinplot(x="Opportunity Result",y="Client Size By Revenue",
+hue="Opportunity Result", data=sales_data);
+
 plt.show()
