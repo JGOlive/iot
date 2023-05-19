@@ -32,7 +32,7 @@ haberman_rs = 10
     ## haberman
         ## split into (train) and (validation + test)
 haberman_data_train, haberman_data_valtest, haberman_target_train, haberman_target_valtest = train_test_split(haberman_data,haberman_target, test_size = haberman_ts, random_state = haberman_rs)
-        ## plit into (validation) + (test)
+        ## split into (validation) + (test)
 haberman_data_val, haberman_data_test, haberman_target_val, haberman_target_test = train_test_split(haberman_data,haberman_target, test_size = 0.5, random_state = haberman_rs)
     ## iris
 
