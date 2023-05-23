@@ -14,6 +14,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, recall_score, precision_score, confusion_matrix
 from sklearn import preprocessing
 from yellowbrick.classifier import ClassificationReport
+from sklearn.neural_network import MLPClassifier
 
 #reading the files and meter indice na 1º linha
     ## haberman
@@ -47,7 +48,7 @@ print(data_train.head())
 print("target train")
 print(target_train.head())
 
-
+'''
 # LINEAR SVC
 
 svc_model = LinearSVC(random_state=0)
@@ -61,4 +62,13 @@ visualizer = ClassificationReport(svc_model, classes=['Won','Loss'])
 visualizer.fit(data_train, target_train) # Fit the training data to the visualizer
 visualizer.score(data_test, target_test) # Evaluate the model on the test data
 g = visualizer.poof() # Draw/show/poof the data
+'''
 
+# Create an MLP classifier with two hidden layers of 10 neurons each and relu activation function
+mlp = MLPClassifier(hidden_layer_sizes=(5, 10), activation='relu', random_state=42, max_iter=500)
+
+# Train the classifier on the train set
+mlp.fit(data_train, target_train)
+
+# Evaluate the classifier on the test set
+print(mlp.score(data_test, target_test))
