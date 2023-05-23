@@ -24,6 +24,15 @@ haberman_data_file = pd.read_csv("haberman.data",names=["p_age", "year_op", "n_p
 iris_data_file = pd.read_csv("iris.data",names=["s_length","s_width","p_length","p_width","class"])
 '''
 
+# create an instance of the LabelEncoder class
+le = preprocessing.LabelEncoder()
+
+# encode your categorical data into numerical data
+haberman_data_file["surv_stat"] = le.fit_transform(haberman_data_file["surv_stat"])
+
+# print the encoded data
+print(haberman_data_file["surv_stat"])
+
 #HABERMAN
 #dividir colunas de data e de objetivo
 cols = [col for col in haberman_data_file.columns if col not in ["surv_stat"]]
