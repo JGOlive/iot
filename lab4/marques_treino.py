@@ -85,6 +85,10 @@ target = sales_data['Opportunity Result']
 
 data_train, data_test, target_train, target_test = train_test_split(data,target, test_size = 0.30, random_state = 10)
 
+print("data_train")
+print(data_train.head())
+print("target train")
+print(target_train.head())
 
 #AI STUFZ     Naive
 '''
