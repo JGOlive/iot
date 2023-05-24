@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from sklearn.neural_network import MLPClassifier
 
 df = pd.read_csv("Lab6-Proj1_Dataset.csv")
 test_set = pd.read_csv("Lab6-Proj1_TestSet.csv")
@@ -30,7 +31,7 @@ plt.show()
 '''
 
 # Train, Validation, Test split
-# 60% train 15% validation 15% test
+# 70% train 15% validation 15% test
 random_state = 42
 val_test_size = 0.3
 test_size = 0.5
@@ -38,4 +39,10 @@ x_train, x_valtest, y_train, y_valtest = train_test_split(df_dataset["Anchor_Rat
 x_validation, x_test, y_validation, y_test = train_test_split(x_valtest, y_valtest, test_size=test_size, random_state=random_state)
 
 # NN architecture
+mlp = MLPClassifier(hidden_layer_sizes=(5, 5), activation="logistic",solver="sgd", random_state=42, max_iter=500)
+
+# Train the NN
+mlp.fit(x_train,y_train)
+
+# Validate
 
