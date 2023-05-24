@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import cross_val_score
 
 df = pd.read_csv("Lab6-Proj1_Dataset.csv")
 test_set = pd.read_csv("Lab6-Proj1_TestSet.csv")
@@ -45,4 +46,7 @@ mlp = MLPClassifier(hidden_layer_sizes=(5, 5), activation="logistic",solver="sgd
 mlp.fit(x_train,y_train)
 
 # Validate
+scores = cross_val_score(mlp,x_validation,y_validation, cv=5)
+
+# Test
 
