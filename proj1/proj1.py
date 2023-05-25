@@ -6,6 +6,8 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import cross_val_score
 import numpy as np
 import pickle
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
 
 df = pd.read_csv("Lab6-Proj1_Dataset.csv")
 
@@ -37,41 +39,38 @@ plt.show()
 '''
 
 # Train, Validation, Test split
-# 70% train 15% validation 15% test
+# 80% train 15% validation 15% test
 random_state = 42
-val_test_size = 0.3
-test_size = 0.5
+test_size = 0.15
 
 cols = [col for col in df_dataset.columns if col not in ["ESLE"]]
 data_dataset = df_dataset[cols]
 target_dataset = df_dataset["ESLE"]
 
-x_train, x_valtest, y_train, y_valtest = train_test_split(data_dataset, target_dataset, test_size=val_test_size, random_state=random_state)
-x_validation, x_test, y_validation, y_test = train_test_split(x_valtest, y_valtest, test_size=test_size, random_state=random_state)
+x_trainval, x_test, y_trainval, y_test = train_test_split(data_dataset, target_dataset, test_size=test_size, random_state=random_state)
 
 # NN architecture
-mlp = MLPRegressor(hidden_layer_sizes=(6, 8), activation="logistic",solver="sgd", random_state=42, max_iter=500)
+mlp = MLPRegressor(hidden_layer_sizes=(6, 8), activation="logistic",solver="sgd", random_state=random_state, max_iter=500)
 
-# Train the NN
-mlp.fit(x_train,y_train)
-
-# Validate
-scores = cross_val_score(mlp,x_validation,y_validation, cv=10)
+# Train and Validate
+scores = cross_val_score(mlp,x_trainval,y_trainval, cv=10)
 mean_scores = scores.mean()
 
 print(scores)
 print(mean_scores)
 
+# Train
+mlp.fit(x_trainval,y_trainval)
+
 # Test
 y_predicted = mlp.predict(x_test)
 
-e = abs(y_predicted - y_test)
 
-rsme = np.sqrt(sum(np.square(e))/np.size(e))
+rmse = mean_squared_error(y_test, y_predicted, squared=False)
 
-mae = sum(e)/np.size(e)
+mae = mean_absolute_error(y_test,y_predicted)
 
-print("RSME:",rsme)
+print("RSME:",rmse)
 print("MAE:",mae)
 
 # save the neural network
