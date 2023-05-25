@@ -62,7 +62,7 @@ scores = cross_val_score(mlp,x_trainval,y_trainval, cv=10)
 mean_scores = scores.mean()
 
 print(scores)
-print(mean_scores)
+print("Validation mean score:",mean_scores)
 
 # Train
 mlp.fit(x_train,y_train)
