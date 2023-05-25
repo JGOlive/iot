@@ -39,15 +39,20 @@ plt.show()
 '''
 
 # Train, Validation, Test split
-# 80% train 15% validation 15% test
+# 70% train 15% validation 15% test
 random_state = 42
-test_size = 0.15
+valtest_size = 0.3
+val_test_ratio = 0.5
 
 cols = [col for col in df_dataset.columns if col not in ["ESLE"]]
 data_dataset = df_dataset[cols]
 target_dataset = df_dataset["ESLE"]
 
-x_trainval, x_test, y_trainval, y_test = train_test_split(data_dataset, target_dataset, test_size=test_size, random_state=random_state)
+x_train, x_valtest, y_train, y_valtest = train_test_split(data_dataset, target_dataset, test_size=valtest_size, random_state=random_state)
+x_val, x_test, y_val, y_test = train_test_split(x_valtest, y_valtest, test_size=val_test_ratio, random_state=random_state)
+
+x_trainval = pd.concat([x_train, x_val],ignore_index=True, sort=False)
+y_trainval = pd.concat([y_train, y_val],ignore_index=True, sort=False)
 
 # NN architecture
 mlp = MLPRegressor(hidden_layer_sizes=(6, 8), activation="logistic",solver="sgd", random_state=random_state, max_iter=500)
@@ -60,7 +65,7 @@ print(scores)
 print(mean_scores)
 
 # Train
-mlp.fit(x_trainval,y_trainval)
+mlp.fit(x_train,y_train)
 
 # Test
 y_predicted = mlp.predict(x_test)
