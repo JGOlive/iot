@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import sklearn
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import cross_val_score
@@ -15,21 +16,24 @@ z_scores = abs(df - df_mean)/df_std
 
 df_dataset = df.copy()
 
-''''''
+'''
 #visual represenation of all the points
 plt.plot(z_scores)
 plt.show()
-''''''
+'''
     # exclude ouliers by a threshold k*std
 threshold = 2.6
-df_dataset[z_scores <= threshold]
+outliers_std = z_scores > threshold
+df_dataset = df_dataset[~outliers_std]
+df_dataset.dropna(inplace=True)
+
 z_scores_dataset = z_scores[z_scores <= threshold]
 
-''''''
+'''
 # visal representation of the chosen points
 plt.plot(z_scores_dataset)
 plt.show()
-''''''
+'''
 
 # Train, Validation, Test split
 # 70% train 15% validation 15% test
