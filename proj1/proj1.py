@@ -4,9 +4,10 @@ import sklearn
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import cross_val_score
+import numpy as np
+import pickle
 
 df = pd.read_csv("Lab6-Proj1_Dataset.csv")
-test_set = pd.read_csv("Lab6-Proj1_TestSet.csv")
 
 # Dataset
     # z score calculation
@@ -30,7 +31,7 @@ df_dataset.dropna(inplace=True)
 z_scores_dataset = z_scores[z_scores <= threshold]
 
 '''
-# visal representation of the chosen points
+# visual representation of the chosen points
 plt.plot(z_scores_dataset)
 plt.show()
 '''
@@ -49,13 +50,32 @@ x_train, x_valtest, y_train, y_valtest = train_test_split(data_dataset, target_d
 x_validation, x_test, y_validation, y_test = train_test_split(x_valtest, y_valtest, test_size=test_size, random_state=random_state)
 
 # NN architecture
-mlp = MLPRegressor(hidden_layer_sizes=(5, 5), activation="logistic",solver="sgd", random_state=42, max_iter=500)
+mlp = MLPRegressor(hidden_layer_sizes=(6, 8), activation="logistic",solver="sgd", random_state=42, max_iter=500)
 
 # Train the NN
 mlp.fit(x_train,y_train)
 
 # Validate
-scores = cross_val_score(mlp,x_validation,y_validation, cv=5)
+scores = cross_val_score(mlp,x_validation,y_validation, cv=10)
+mean_scores = scores.mean()
+
+print(scores)
+print(mean_scores)
 
 # Test
+y_prediciton = mlp.predict(x_test)
 
+e = abs(y_prediciton - y_test)
+
+rsme = np.sqrt(sum(np.square(e))/np.size(e))
+
+mae = sum(e)/np.size(e)
+
+print("RSME:",rsme)
+print("MAE:",mae)
+
+# save the neural network
+
+NN_filename = "NN_Model.pkl"
+with open(NN_filename, "wb") as file:
+    pickle.dump(mlp,file)
