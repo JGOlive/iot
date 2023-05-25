@@ -55,25 +55,41 @@ x_trainval = pd.concat([x_train, x_val],ignore_index=True, sort=False)
 y_trainval = pd.concat([y_train, y_val],ignore_index=True, sort=False)
 
 # NN architecture
-mlp = MLPRegressor(hidden_layer_sizes=(6, 8), activation="logistic",solver="sgd", random_state=random_state, max_iter=500)
+mlp_cross = MLPRegressor(hidden_layer_sizes=(6, 8), activation="logistic",solver="sgd", random_state=random_state, max_iter=500)
+mlp_s_cross = MLPRegressor(hidden_layer_sizes=(6, 8), activation="logistic",solver="sgd", random_state=random_state, max_iter=500)
 
 # Train and Validate
-scores = cross_val_score(mlp,x_trainval,y_trainval, cv=10)
+scores = cross_val_score(mlp_cross,x_trainval,y_trainval, cv=10, scoring="neg_root_mean_squared_error")
 mean_scores = scores.mean()
 
 print(scores)
 print("Validation mean score:",mean_scores)
 
 # Train
-mlp.fit(x_train,y_train)
+mlp_cross.fit(x_train,y_train)
+mlp_s_cross.fit(x_train,y_train)
+
+# Validate sem cross
+
+y_validation_s_cross = mlp_s_cross.predict(x_val)
+rmse_val = mean_squared_error(y_val, y_validation_s_cross, squared=False)
+mae_val = mean_absolute_error(y_val,y_validation_s_cross)
+
+print("RSME val:",rmse_val)
+print("MAE val:",mae_val)
 
 # Test
-y_predicted = mlp.predict(x_test)
+y_predicted_cross = mlp_cross.predict(x_test)
+y_predicted_s_cross = mlp_cross.predict(x_test)
 
 
-rmse = mean_squared_error(y_test, y_predicted, squared=False)
+rmse = mean_squared_error(y_test, y_predicted_cross, squared=False)
+mae = mean_absolute_error(y_test,y_predicted_cross)
 
-mae = mean_absolute_error(y_test,y_predicted)
+rmse_test = mean_squared_error(y_test, y_predicted_s_cross, squared=False)
+mae_test = mean_absolute_error(y_test,y_predicted_s_cross)
+print("RSME test:",rmse_test)
+print("MAE test:",mae_test)
 
 print("RSME:",rmse)
 print("MAE:",mae)
