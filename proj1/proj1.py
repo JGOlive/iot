@@ -63,9 +63,9 @@ print(scores)
 print(mean_scores)
 
 # Test
-y_prediciton = mlp.predict(x_test)
+y_predicted = mlp.predict(x_test)
 
-e = abs(y_prediciton - y_test)
+e = abs(y_predicted - y_test)
 
 rsme = np.sqrt(sum(np.square(e))/np.size(e))
 
