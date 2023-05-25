@@ -58,7 +58,7 @@ y_trainval = pd.concat([y_train, y_val],ignore_index=True, sort=False)
 mlp = MLPRegressor(hidden_layer_sizes=(6, 8), activation="logistic",solver="sgd", random_state=random_state, max_iter=500)
 
 # Train and Validate
-scores = cross_val_score(mlp,x_trainval,y_trainval, cv=10)
+scores = cross_val_score(mlp,x_trainval,y_trainval, cv=10, scoring="neg_root_mean_squared_error")
 mean_scores = scores.mean()
 
 print(scores)
