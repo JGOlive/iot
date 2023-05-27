@@ -55,7 +55,7 @@ x_trainval = pd.concat([x_train, x_val],ignore_index=True, sort=False)
 y_trainval = pd.concat([y_train, y_val],ignore_index=True, sort=False)
 
 # NN architecture
-mlp_cross = MLPRegressor(hidden_layer_sizes=(6, 8), activation="logistic",solver="sgd", random_state=random_state, max_iter=200)
+mlp_cross = MLPRegressor(hidden_layer_sizes=(16), activation="logistic",solver="sgd", random_state=random_state, max_iter=200)
 mlp_s_cross = MLPRegressor(hidden_layer_sizes=(7, 6), activation="logistic",solver="sgd", random_state=random_state, max_iter=200)
 
 # Train and Validate
