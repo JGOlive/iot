@@ -25,7 +25,7 @@ plt.plot(z_scores)
 plt.show()
 '''
     # exclude ouliers by a threshold k*std
-threshold = 2.6
+threshold = 2.8
 outliers_std = z_scores > threshold
 df_dataset = df_dataset[~outliers_std]
 df_dataset.dropna(inplace=True)
@@ -55,7 +55,7 @@ x_trainval = pd.concat([x_train, x_val],ignore_index=True, sort=False)
 y_trainval = pd.concat([y_train, y_val],ignore_index=True, sort=False)
 
 # NN architecture
-mlp_cross = MLPRegressor(hidden_layer_sizes=(16), activation="logistic",solver="sgd", random_state=random_state, max_iter=200)
+mlp_cross = MLPRegressor(hidden_layer_sizes=(6), activation="logistic",solver="sgd", random_state=random_state, max_iter=200)
 mlp_s_cross = MLPRegressor(hidden_layer_sizes=(7, 6), activation="logistic",solver="sgd", random_state=random_state, max_iter=200)
 
 # Train and Validate
@@ -100,10 +100,20 @@ print("MAE test:",mae_test)
 print("Test RSME:",rmse)
 print("Test MAE:",mae)
 
-#print("Train RMSE?",mean_squared_error(y_train,mlp_cross.predict(x_train)))
+'''
+x= range(len(y_test))
+plt.plot(x,y_test, label='y_test')
+plt.plot(x,y_predicted_cross, label='y_predicted_cross')
+# Add labels and legend
+plt.xlabel('Index')
+plt.ylabel('Value')
+plt.legend()
+
+# Display the plot
+plt.show()
+'''
 
 # save the neural network
-
 NN_filename = "NN_Model.pkl"
 with open(NN_filename, "wb") as file:
     pickle.dump(mlp_cross,file)

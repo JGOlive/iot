@@ -43,4 +43,4 @@ rmse = mean_squared_error(y_test, y_predicted, squared=False)
 print("ESLE Predicted:")
 print(y_predicted)
 
-print("RMSE:", rmse)
+print("RMSE of the ESLE:", rmse)
