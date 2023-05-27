@@ -12,7 +12,7 @@ from sklearn.metrics import mean_absolute_error
 df = pd.read_csv("Lab6-Proj1_Dataset.csv")
 
 # Dataset
-    # z score calculation
+# z score calculation
 df_mean = df.mean()
 df_std = df.std()
 z_scores = abs(df - df_mean)/df_std
@@ -24,7 +24,7 @@ df_dataset = df.copy()
 plt.plot(z_scores)
 plt.show()
 '''
-    # exclude ouliers by a threshold k*std
+# exclude ouliers by a threshold k*std
 threshold = 2.8
 outliers_std = z_scores > threshold
 df_dataset = df_dataset[~outliers_std]
@@ -34,7 +34,7 @@ z_scores_dataset = z_scores[z_scores <= threshold]
 
 '''
 # visual representation of the chosen points
-plt.plot(z_scores_dataset)
+plt.plot(z_scores_dataset) # para cada categoria exemplo: plt.plot(z_scores_dataset["ESLE"])
 plt.show()
 '''
 
@@ -66,11 +66,10 @@ print(scores)
 print("Validation RMSE:",mean_scores)
 
 # Train
-mlp_cross.fit(x_train,y_train)
+mlp_cross.fit(x_trainval,y_trainval)
 mlp_s_cross.fit(x_train,y_train)
 
 # Validate sem cross
-
 y_validation_s_cross = mlp_s_cross.predict(x_val)
 rmse_val = mean_squared_error(y_val, y_validation_s_cross, squared=False)
 mae_val = mean_absolute_error(y_val,y_validation_s_cross)
