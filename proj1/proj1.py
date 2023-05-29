@@ -39,9 +39,9 @@ plt.show()
 '''
 
 # Train, Validation, Test split
-# 70% train 15% validation 15% test
+# 60% train 20% validation 20% test
 random_state = 42
-valtest_size = 0.3
+valtest_size = 0.4
 val_test_ratio = 0.5
 
 cols = [col for col in df_dataset.columns if col not in ["ESLE"]]
@@ -55,7 +55,7 @@ x_trainval = pd.concat([x_train, x_val],ignore_index=True, sort=False)
 y_trainval = pd.concat([y_train, y_val],ignore_index=True, sort=False)
 
 # NN architecture
-mlp_cross = MLPRegressor(hidden_layer_sizes=(6), activation="logistic",solver="sgd", random_state=random_state, max_iter=200)
+mlp_cross = MLPRegressor(hidden_layer_sizes=(16), activation="logistic",solver="sgd", random_state=random_state, max_iter=300)
 mlp_s_cross = MLPRegressor(hidden_layer_sizes=(7, 6), activation="logistic",solver="sgd", random_state=random_state, max_iter=200)
 
 # Train and Validate
