@@ -32,11 +32,11 @@ df_dataset.dropna(inplace=True)
 
 z_scores_dataset = z_scores[z_scores <= threshold]
 
-
+'''
 # visual representation of the chosen points
 plt.plot(z_scores_dataset) # para cada categoria exemplo: plt.plot(z_scores_dataset["ESLE"])
 plt.show()
-
+'''
 
 # Train, Validation, Test split
 # 60% train 20% validation 20% test
