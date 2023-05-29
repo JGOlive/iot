@@ -56,7 +56,7 @@ y_trainval = pd.concat([y_train, y_val],ignore_index=True, sort=False)
 
 # NN architecture
 mlp_cross = MLPRegressor(hidden_layer_sizes=(16), activation="logistic",solver="sgd", random_state=random_state, max_iter=300)
-mlp_s_cross = MLPRegressor(hidden_layer_sizes=(7, 6), activation="logistic",solver="sgd", random_state=random_state, max_iter=200)
+mlp_s_cross = MLPRegressor(hidden_layer_sizes=(16), activation="logistic",solver="sgd", random_state=random_state, max_iter=200)
 
 # Train and Validate
 scores = abs(cross_val_score(mlp_cross,x_trainval,y_trainval, cv=10, scoring="neg_root_mean_squared_error")) # não sei porque ele dá o rsme negativo
@@ -67,7 +67,7 @@ print("Validation RMSE:",mean_scores)
 
 # Train
 mlp_cross.fit(x_trainval,y_trainval)
-mlp_s_cross.fit(x_train,y_train)
+mlp_s_cross.fit(x_trainval,y_trainval)
 
 # Validate sem cross
 y_validation_s_cross = mlp_s_cross.predict(x_val)
