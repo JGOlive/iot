@@ -1,0 +1,13 @@
+Mais latência mais processamento local (dito pelo professor)
+
+Menos input bandwidth = menos processamento 
+
+Separa-se o projeto em Fuzzy systems
+
+1 Fuzzy do cpu
+    cpu load
+    memory usage
+
+2 Fuzzy da network
+    input
+    output

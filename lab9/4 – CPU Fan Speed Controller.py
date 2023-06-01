@@ -16,5 +16,7 @@ FS1.add_linguistic_variable("Fan_Speed_%", LinguisticVariable([O1, O2, O3], univ
 FS1.add_rules([
     "IF (CPU_Speed IS Turbo) THEN (Fan_Speed_% IS Fast)"
     "IF (CPU_Temp IS Hot) THEN (Fan_Speed_% IS Fast)"
-     
+    "IF ((CPU_Speed IS Normal) AND (CPU_Temp IS Warm)) THEN (Fan_Speed_% IS Medium))"
+    "IF ((CPU_Speed IS Slow) AND (CPU_Temp IS (Cold OR Warm))) THEN (Fan_Speed_% IS Slow)"
+    "IF ((CPU_Temp IS Cold) AND (CPU_Speed IS (Slow OR Normal))) THEN (Fan_Speed_% IS Slow)"
     ])
