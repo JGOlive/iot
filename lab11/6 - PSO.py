@@ -2,6 +2,7 @@ import operator
 import random
 import numpy as np
 
+import numpy
 import math
 
 from deap import base

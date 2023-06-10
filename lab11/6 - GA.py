@@ -7,10 +7,14 @@ from deap import creator
 from deap import tools
 
 # Functions
-def evalOneMax(x1, x2):
+def evalOneMax(individual):
+    x1, x2 = individual
     z1 = np.sqrt(x1**2 + x2**2)
     z2 = np.sqrt((x1-1)**2 + (x2-1)**2 )
     
+    if z1 == 0 or z2 == 0:
+        return (0,)
+
     f1 = ((np.sin(4*z1))/z1) + ((np.sin(2.5*z2))/z2)
     return (f1,)
 
@@ -22,13 +26,12 @@ toolbox = base.Toolbox()
 # Attribute generator 
 toolbox.register("attr_bool", random.randint, 0, 1)
 # Structure initializers
-toolbox.register("individual", tools.initRepeat, creator.Individual, 
-    toolbox.attr_bool, 100)
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, 2)  # Updated to 2 variables
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("evaluate", evalOneMax)
-toolbox.register("mate", tools.cxTwoPoint) #cxTwoPoint
-toolbox.register("mutate", tools.mutFlipBit, indpb=0.05) # indpb = 0.05
+toolbox.register("mate", tools.cxTwoPoint)
+toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
 toolbox.register("select", tools.selTournament, tournsize=3)
 
 def main():
@@ -39,8 +42,8 @@ def main():
     for ind, fit in zip(pop, fitnesses):
         ind.fitness.values = fit
 
-    # CXPB  is the probability with which two individuals
-    #       are crossed
+    # CXPB is the probability with which two individuals
+    # are crossed
     #
     # MUTPB is the probability for mutating an individual
     CXPB, MUTPB = 0.5, 0.2
@@ -51,10 +54,10 @@ def main():
     # Variable keeping track of the number of generations
     g = 0
 
-    #count the time
+    # Count the time
     start_time = time.time()
     # Begin the evolution
-    while max(fits) < 100 and g < 100: # g < 1000
+    while max(fits) < 100 and g < 100:
         # A new generation
         g = g + 1
         print("-- Generation %i --" % g)
