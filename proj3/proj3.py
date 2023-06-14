@@ -8,11 +8,18 @@ from deap import tools
 
 # Pandas file
 distances_df = pd.read_excel("Project3_DistancesMatrix.xlsx", index_col=0)
-N_POINTS = len(distances_df["Distance"])
-print(N_POINTS)
+N_POINTS_COLUMNS = len(distances_df.columns)
+N_POINTS_ROWS = len(distances_df)
+N_POINTS = N_POINTS_ROWS
+# mudar para índices
+distances = distances_df.copy()
+distances = distances.reset_index(drop=True)
+distances.columns = range(1, len(distances.columns) + 1)
+#print(distances)
+
 # Functions
 # Evaluation function
-def evalOneMax(individual):
+def evalTSP(individual):
     return sum(individual),
 
 # Code
@@ -26,7 +33,7 @@ toolbox.register("attr_int", random.randint, 1, N_POINTS)
 toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_int, 100)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
-toolbox.register("evaluate", evalOneMax)
+toolbox.register("evaluate", evalTSP)
 toolbox.register("mate", tools.cxTwoPoint) #cxTwoPoint
 toolbox.register("mutate", tools.mutFlipBit, indpb=0.05) # indpb = 0.05
 toolbox.register("select", tools.selTournament, tournsize=3)
