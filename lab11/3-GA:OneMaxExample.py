@@ -34,8 +34,8 @@ def main():
     for ind, fit in zip(pop, fitnesses):
         ind.fitness.values = fit
 
-    # CXPB  is the probability with which two individuals
-    #       are crossed
+    # CXPB is the probability with which two individuals
+    # are crossed
     #
     # MUTPB is the probability for mutating an individual
     CXPB, MUTPB = 0.5, 0.2
@@ -46,7 +46,7 @@ def main():
     # Variable keeping track of the number of generations
     g = 0
 
-    #count the time
+    # Count the time
     start_time = time.time()
     # Begin the evolution
     while max(fits) < 100 and g < 100: # g < 1000

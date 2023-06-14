@@ -10,9 +10,12 @@ from deap import benchmarks
 from deap import creator
 from deap import tools
 
-def evalOneMax(x1, x2):
+def evalOneMax(individual):
+    x1 = individual[0]
+    x2 = individual[1]
+
     z1 = np.sqrt(x1**2 + x2**2)
-    z2 = np.sqrt((x1-1)**2 + (x2-1)**2 )
+    z2 = np.sqrt((x1-1)**2 + (x2+1)**2 )
     
     f1 = ((np.sin(4*z1))/z1) + ((np.sin(2.5*z2))/z2)
     return (f1,)
@@ -23,8 +26,7 @@ creator.create("Particle", list, fitness=creator.FitnessMax, speed=list,
 
 def generate(size, pmin, pmax, smin, smax):
     part = creator.Particle()
-    part.append(random.uniform(pmin, pmax))  # x1
-    part.append(random.uniform(pmin, pmax))  # x2
+    part = creator.Particle(random.uniform(pmin, pmax) for _ in range(size))
     part.speed = [random.uniform(smin, smax) for _ in range(size)]
     part.smin = smin
     part.smax = smax
@@ -44,28 +46,30 @@ def updateParticle(part, best, phi1, phi2):
     part[:] = list(map(operator.add, part, part.speed))
 
 toolbox = base.Toolbox()
-toolbox.register("particle", generate, size=2, pmin=-6, pmax=6, smin=-3, smax=3)
+toolbox.register("particle", generate, size=2, pmin=-10, pmax=10, smin=-1, smax=1)
 toolbox.register("population", tools.initRepeat, list, toolbox.particle)
-toolbox.register("update", updateParticle, phi1=2.0, phi2=2.0)
+toolbox.register("update", updateParticle, phi1=1.6, phi2=2.0)
 toolbox.register("evaluate", evalOneMax)
 
 def main():
-    pop = toolbox.population(n=5)
+    pop = toolbox.population(n=10)
     stats = tools.Statistics(lambda ind: ind.fitness.values)
     stats.register("avg", numpy.mean)
     stats.register("std", numpy.std)
     stats.register("min", numpy.min)
     stats.register("max", numpy.max)
 
+    hof = tools.HallOfFame(maxsize=1)
+
     logbook = tools.Logbook()
     logbook.header = ["gen", "evals"] + stats.fields
 
-    GEN = 1000
+    GEN = 100
     best = None
 
     for g in range(GEN):
         for part in pop:
-            part.fitness.values = toolbox.evaluate(part[0], part[1])
+            part.fitness.values = toolbox.evaluate(part)
             if not part.best or part.best.fitness < part.fitness:
                 part.best = creator.Particle(part)
                 part.best.fitness.values = part.fitness.values
@@ -74,6 +78,16 @@ def main():
                 best.fitness.values = part.fitness.values
         for part in pop:
             toolbox.update(part, best)
+
+        # Print the current pair of x1 and x2
+        print("Particle:", part[0], part[1])
+
+        # Update the Hall of Fame
+        hof.update(pop)
+
+        # Access the best individual in the Hall of Fame
+        best_individual = hof[0]
+        #print("Best individual: ",best_individual)
 
         # Gather all the fitnesses in one list and print the stats
         logbook.record(gen=g, evals=len(pop), **stats.compile(pop))

@@ -10,7 +10,7 @@ from deap import tools
 def evalOneMax(individual):
     x1, x2 = individual
     z1 = np.sqrt(x1**2 + x2**2)
-    z2 = np.sqrt((x1-1)**2 + (x2-1)**2 )
+    z2 = np.sqrt((x1-1)**2 + (x2+1)**2 )
     
     if z1 == 0 or z2 == 0:
         return (0,)
@@ -24,9 +24,9 @@ creator.create("Individual", list, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 # Attribute generator 
-toolbox.register("attr_bool", random.randint, 0, 1)
+toolbox.register("attr_float", random.uniform, -6, 6)
 # Structure initializers
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, 2)  # Updated to 2 variables
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_float, n=2)  # Updated to 2 variables
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("evaluate", evalOneMax)
