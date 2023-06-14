@@ -6,7 +6,12 @@ from deap import base
 from deap import creator
 from deap import tools
 
+# Pandas file
+distances_df = pd.read_excel("Project3_DistancesMatrix.xlsx", index_col=0)
+N_POINTS = len(distances_df["Distance"])
+print(N_POINTS)
 # Functions
+# Evaluation function
 def evalOneMax(individual):
     return sum(individual),
 
@@ -16,10 +21,9 @@ creator.create("Individual", list, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 # Attribute generator 
-toolbox.register("attr_bool", random.randint, 0, 1)
+toolbox.register("attr_int", random.randint, 1, N_POINTS)
 # Structure initializers
-toolbox.register("individual", tools.initRepeat, creator.Individual, 
-    toolbox.attr_bool, 100)
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_int, 100)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("evaluate", evalOneMax)
@@ -28,9 +32,6 @@ toolbox.register("mutate", tools.mutFlipBit, indpb=0.05) # indpb = 0.05
 toolbox.register("select", tools.selTournament, tournsize=3)
 
 def main():
-    # Pandas file
-    distances_df = pd.read_excel("Project3_DistancesMatrix.xls", index_col=0)
-
     pop = toolbox.population(n=300)
 
     # Evaluate the entire population
@@ -38,8 +39,8 @@ def main():
     for ind, fit in zip(pop, fitnesses):
         ind.fitness.values = fit
 
-    # CXPB  is the probability with which two individuals
-    #       are crossed
+    # CXPB is the probability with which two individuals
+    # are crossed
     #
     # MUTPB is the probability for mutating an individual
     CXPB, MUTPB = 0.5, 0.2
@@ -50,7 +51,7 @@ def main():
     # Variable keeping track of the number of generations
     g = 0
 
-    #count the time
+    # Count the time
     start_time = time.time()
     # Begin the evolution
     while max(fits) < 100 and g < 100: # g < 1000
