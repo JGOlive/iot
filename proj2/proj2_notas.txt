@@ -9,5 +9,8 @@ Separa-se o projeto em Fuzzy systems
     memory usage
 
 2 Fuzzy da network
-    input
-    output
+    bloco 1
+        input
+        output
+        bandwidth
+    latency

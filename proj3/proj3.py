@@ -11,21 +11,22 @@ distances_df = pd.read_excel("Project3_DistancesMatrix.xlsx", index_col=0)
 # mudar para índices
 distances = distances_df.copy()
 distances = distances.reset_index(drop=True)
-distances.columns = range(1, len(distances.columns) + 1)
+distances.columns = range(0, len(distances.columns))
 N_POINTS_COLUMNS = len(distances.columns)
 N_POINTS_ROWS = len(distances)
 N_POINTS = N_POINTS_ROWS
 M_POINT_IN = N_POINTS - 1
-#print(len(distances))
+print(len(distances))
+print("N points:",N_POINTS)
 print(distances)
-print
 
 # Functions
 # Evaluation function
 def evalTSP(individual):
-    distance_calc = 0
-    for i in range(N_POINTS):
-        distance_calc = distance_calc + distances[individual((i+1)%M_POINT_IN)][individual(i)]
+    distance_calc = distances[0][99]
+    #print(individual[1])
+    for i in range(1,N_POINTS):
+        distance_calc = distance_calc + distances[individual[i-1]][individual[i]]
     return sum(individual),
 
 # Code
