@@ -16,33 +16,33 @@ N_POINTS_COLUMNS = len(distances.columns)
 N_POINTS_ROWS = len(distances)
 N_POINTS = N_POINTS_ROWS
 M_POINT_IN = N_POINTS - 1
-print(len(distances))
-print("N points:",N_POINTS)
-print(distances)
+#print(len(distances))
+#print("N points:",N_POINTS)
+#print(distances)
 
 # Functions
 # Evaluation function
 def evalTSP(individual):
-    distance_calc = distances[0][99]
-    #print(individual[1])
+    distance_calc = distances[0][M_POINT_IN]
     for i in range(1,N_POINTS):
         distance_calc = distance_calc + distances[individual[i-1]][individual[i]]
-    return sum(individual),
+
+    return distance_calc,
 
 # Code
-creator.create("FitnessMax", base.Fitness, weights=(1.0,))
-creator.create("Individual", list, fitness=creator.FitnessMax)
+creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
+creator.create("Individual", list, fitness=creator.FitnessMin)
 
 toolbox = base.Toolbox()
 # Attribute generator 
-toolbox.register("attr_int", random.randint, 1, N_POINTS)
+toolbox.register("attr_int", random.randint, 1, M_POINT_IN)
 # Structure initializers
 toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_int, 100)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("evaluate", evalTSP)
-toolbox.register("mate", tools.cxTwoPoint) #cxTwoPoint
-toolbox.register("mutate", tools.mutFlipBit, indpb=0.05) # indpb = 0.05
+toolbox.register("mate", tools.cxOrdered) #cxTwoPoint
+toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.05) # indpb = 0.05
 toolbox.register("select", tools.selTournament, tournsize=3)
 
 def main():
