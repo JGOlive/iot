@@ -21,10 +21,16 @@ FS_NET_US = FuzzySystem()
 FS_NET_AV = FuzzySystem()
 FS_CLPV = FuzzySystem()
 
+# Fuzzyset Template
+
+Template_FuzzySet_01 = FuzzySet( points=[[0, 0], [0, 1.],  [0.25, 1.], [0.5, 0]], term="low" )
+Template_FuzzySet_02 = FuzzySet( points=[[0.2, 0.],  [0.4, 1.],  [0.6, 1], [0.8, 0]], term="medium")
+Template_FuzzySet_03 = FuzzySet( points=[[0.5, 0.],  [0.65, 1.],  [1, 1.], [1, 0]], term="high" )
+
 # CPU Fuzzy System
-CPU_Ut_01 = FuzzySet( points=[[0, 1.],  [0.40, 1.],  [0.7, 0]], term="low" )
-CPU_Ut_02 = FuzzySet( points=[[0.50, 0.],  [0.70, 1.],  [0.80, 1], [0.90, 0]], term="medium" )
-CPU_Ut_03 = FuzzySet( points=[[0.8, 0.],  [0.9, 1.], [1, 1]], term="high" )
+CPU_Ut_01 = FuzzySet( points=[[0, 1.],  [0.40, 1.],  [0.65, 0]], term="low" )
+CPU_Ut_02 = FuzzySet( points=[[0.45, 0.],  [0.65, 1.],  [0.75, 1], [0.85, 0]], term="medium" )
+CPU_Ut_03 = FuzzySet( points=[[0.75, 0.],  [0.85, 1.], [1, 1]], term="high" )
 
 CPU_LOAD.add_linguistic_variable("cpu_ut", LinguisticVariable( [CPU_Ut_01, CPU_Ut_02, CPU_Ut_03] ))
 
@@ -49,15 +55,15 @@ CPU_LOAD.add_rules([
 
 
 # Network Usage
-NET_Input_01 = FuzzySet( points=[[0, 1.],  [0.25, 1.], [0.35, 0]], term="low" )
-NET_Input_02 = FuzzySet( points=[[0.25, 0.],  [0.35, 1.],  [0.65, 1], [0.75, 0]], term="medium" )
-NET_Input_03 = FuzzySet( points=[[0.65, 0.],  [0.75, 1.], [1, 1]], term="high" )
+NET_Input_01 = Template_FuzzySet_01
+NET_Input_02 = Template_FuzzySet_02
+NET_Input_03 = Template_FuzzySet_03
 
 FS_NET_US.add_linguistic_variable("net_input", LinguisticVariable( [NET_Input_01, NET_Input_02, NET_Input_03] ))
 
-NET_Output_01 = FuzzySet( points=[[0, 1.],  [0.25, 1.], [0.35, 0]], term="low" )
-NET_Output_02 = FuzzySet( points=[[0.25, 0.],  [0.35, 1.],  [0.65, 1], [0.75, 0]], term="medium" )
-NET_Output_03 = FuzzySet( points=[[0.65, 0.],  [0.75, 1.], [1, 1]], term="high" )
+NET_Output_01 = Template_FuzzySet_01
+NET_Output_02 = Template_FuzzySet_02
+NET_Output_03 = Template_FuzzySet_03
 
 FS_NET_US.add_linguistic_variable("net_output", LinguisticVariable( [NET_Output_01, NET_Output_02, NET_Output_03] ))
 
@@ -76,15 +82,15 @@ FS_NET_US.add_rules([
 
 
 # Network Available
-NET_Bandwidth_01 = FuzzySet( points=[[0, 1.],  [0.25, 1.], [0.35, 0]], term="low" )
-NET_Bandwidth_02 = FuzzySet( points=[[0.25, 0.],  [0.35, 1.],  [0.65, 1], [0.75, 0]], term="medium" )
-NET_Bandwidth_03 = FuzzySet( points=[[0.65, 0.],  [0.75, 1.], [1, 1]], term="high" )
+NET_Bandwidth_01 = Template_FuzzySet_01
+NET_Bandwidth_02 = Template_FuzzySet_02
+NET_Bandwidth_03 = Template_FuzzySet_03
 
 FS_NET_AV.add_linguistic_variable("net_bandwidth", LinguisticVariable( [NET_Bandwidth_01, NET_Bandwidth_02, NET_Bandwidth_03] ))
 
-NET_Latency_01 = FuzzySet( points=[[0, 1.],  [0.25, 1.], [0.35, 0]], term="low" )
-NET_Latency_02 = FuzzySet( points=[[0.25, 0.],  [0.35, 1.],  [0.65, 1], [0.75, 0]], term="medium" )
-NET_Latency_03 = FuzzySet( points=[[0.65, 0.],  [0.75, 1.], [1, 1]], term="high" )
+NET_Latency_01 = Template_FuzzySet_01
+NET_Latency_02 = Template_FuzzySet_02
+NET_Latency_03 = Template_FuzzySet_03
 
 FS_NET_AV.add_linguistic_variable("net_latency", LinguisticVariable( [NET_Latency_01, NET_Latency_02, NET_Latency_03] ))
 
@@ -102,21 +108,21 @@ FS_NET_AV.add_rules([
 
 
 # FS_CLPV Fuzzy System
-FS_CPU_01 = FuzzySet( points=[[0, 1.],  [0.25, 1.], [0.35, 0]], term="low" )
-FS_CPU_02 = FuzzySet( points=[[0.25, 0.],  [0.35, 1.],  [0.65, 1], [0.75, 0]], term="medium" )
-FS_CPU_03 = FuzzySet( points=[[0.65, 0.],  [0.75, 1.], [1, 1]], term="high" )
+FS_CPU_01 = Template_FuzzySet_01
+FS_CPU_02 = Template_FuzzySet_02
+FS_CPU_03 = Template_FuzzySet_03
 
 FS_CLPV.add_linguistic_variable("fs_cpu", LinguisticVariable( [FS_CPU_01, FS_CPU_02, FS_CPU_03] ))
 
-FS_NET_US_01 = FuzzySet( points=[[0, 1.],  [0.25, 1.], [0.35, 0]], term="low" )
-FS_NET_US_02 = FuzzySet( points=[[0.25, 0.],  [0.35, 1.],  [0.65, 1], [0.75, 0]], term="medium" )
-FS_NET_US_03 = FuzzySet( points=[[0.65, 0.],  [0.75, 1.], [1, 1]], term="high" )
+FS_NET_US_01 = Template_FuzzySet_01
+FS_NET_US_02 = Template_FuzzySet_02
+FS_NET_US_03 = Template_FuzzySet_03
 
 FS_CLPV.add_linguistic_variable("fs_net_us", LinguisticVariable( [FS_NET_US_01, FS_NET_US_02, FS_NET_US_03] ))
 
-FS_NET_AV_01 = FuzzySet( points=[[0, 1.],  [0.25, 1.], [0.35, 0]], term="low" )
-FS_NET_AV_02 = FuzzySet( points=[[0.25, 0.],  [0.35, 1.],  [0.65, 1], [0.75, 0]], term="medium" )
-FS_NET_AV_03 = FuzzySet( points=[[0.65, 0.],  [0.75, 1.], [1, 1]], term="high" )
+FS_NET_AV_01 = Template_FuzzySet_01
+FS_NET_AV_02 = Template_FuzzySet_02
+FS_NET_AV_03 = Template_FuzzySet_03
 
 FS_CLPV.add_linguistic_variable("fs_net_av", LinguisticVariable( [FS_NET_AV_01, FS_NET_AV_02, FS_NET_AV_03] ))
 
@@ -144,9 +150,24 @@ FS_CLPV.add_rules([
 
 # Calculate the outputs
 
+mem_data = df["MemoryUsage"]
+proc_data = df["ProcessorLoad"]
+input_data = df["InpNetThroughput"]
+output_data = df["OutNetThroughput"]
+bandwidth_data = df["OutBandwidth"]
+latency_data = df["Latency"]
 
-# Net Usage FS set Inputs/ get Output 
-for i in range(4):
+
+
+for i in range(len(mem_data)):
+
+	cpu_ut = proc_data[i]
+	cpu_mem = mem_data[i]
+	input_throughput = input_data[i]
+	output_throughput = output_data[i]
+	latency = latency_data[i]
+	available_bw = bandwidth_data[i]
+
 	# CPU FS set Inputs/ get Output 
 	CPU_LOAD.set_variable("cpu_ut", cpu_ut)
 	CPU_LOAD.set_variable("cpu_mem", cpu_mem)
