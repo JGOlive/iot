@@ -7,43 +7,44 @@ print(df[["MemoryUsage","ProcessorLoad","InpNetThroughput","OutNetThroughput","O
 
 # Inputs (should be extraced from the pandas dataframe)
 
-cpu_load = 0.5
-cpu_mem = 0.5
-input_throughput = 0.5
-output_throughput = 0.5
-latency = 0.5
-available_bw = 0.5
+cpu_ut = 0.95
+cpu_mem = 0.95
+input_throughput = 0.1
+output_throughput = 0.1
+latency = 0.1
+available_bw = 0.9
 
 # Fuzzy Systems
 
-FS_CPU = FuzzySystem()
+CPU_LOAD = FuzzySystem()
 FS_NET_US = FuzzySystem()
 FS_NET_AV = FuzzySystem()
-FS_NET = FuzzySystem()
-FIS = FuzzySystem()
+FS_CLPV = FuzzySystem()
 
 # CPU Fuzzy System
-CPU_Load_01 = FuzzySet( points=[[0, 1.],  [0.40, 1.],  [0.7, 0]], term="low_load" )
-CPU_Load_02 = FuzzySet( points=[[0.50, 0.],  [0.70, 1.],  [0.80, 1], [0.90, 0]], term="good_load" )
-CPU_Load_03 = FuzzySet( points=[[0.8, 0.],  [0.9, 1.], [1, 1]], term="overload_load" )
+CPU_Ut_01 = FuzzySet( points=[[0, 1.],  [0.40, 1.],  [0.7, 0]], term="low" )
+CPU_Ut_02 = FuzzySet( points=[[0.50, 0.],  [0.70, 1.],  [0.80, 1], [0.90, 0]], term="medium" )
+CPU_Ut_03 = FuzzySet( points=[[0.8, 0.],  [0.9, 1.], [1, 1]], term="high" )
 
-FS_CPU.add_linguistic_variable("cpu_load", LinguisticVariable( [CPU_Load_01, CPU_Load_02, CPU_Load_03] ))
+CPU_LOAD.add_linguistic_variable("cpu_ut", LinguisticVariable( [CPU_Ut_01, CPU_Ut_02, CPU_Ut_03] ))
 
-CPU_Mem_01 = FuzzySet( points=[[0, 1.],  [0.40, 1.],  [0.65, 0]], term="high_memory" )
-CPU_Mem_02 = FuzzySet( points=[[0.45, 0.],  [0.65, 1.],  [0.75, 1], [0.85, 0]], term="medium_memory" )
-CPU_Mem_03 = FuzzySet( points=[[0.75, 0.],  [0.85, 1.], [1, 1]], term="low_memory" )
+CPU_Mem_01 = FuzzySet( points=[[0, 1.],  [0.40, 1.],  [0.65, 0]], term="low" )
+CPU_Mem_02 = FuzzySet( points=[[0.45, 0.],  [0.65, 1.],  [0.75, 1], [0.85, 0]], term="medium" )
+CPU_Mem_03 = FuzzySet( points=[[0.75, 0.],  [0.85, 1.], [1, 1]], term="high" )
 
-FS_CPU.add_linguistic_variable("cpu_mem", LinguisticVariable( [CPU_Mem_01, CPU_Mem_02, CPU_Mem_03] ))
+CPU_LOAD.add_linguistic_variable("cpu_mem", LinguisticVariable( [CPU_Mem_01, CPU_Mem_02, CPU_Mem_03] ))
 
-FS_CPU.set_crisp_output_value("low_cpu_fs", 0)
-FS_CPU.set_crisp_output_value("medium_cpu_fs", 0.5)
-FS_CPU.set_crisp_output_value("high_cpu_fs", 1)
+CPU_LOAD_OUT_01 = TriangleFuzzySet(0,0,0.5,   term="low")
+CPU_LOAD_OUT_02 = TriangleFuzzySet(0,0.5,1,   term="medium")
+CPU_LOAD_OUT_03 = TriangleFuzzySet(0.5,1,1,   term="high")
 
-FS_CPU.add_rules([
-	"IF (cpu_mem IS low_memory) THEN (cpu_fs IS low_cpu_fs)",
-	"IF (cpu_mem IS medium_memory) THEN (cpu_fs IS medium_cpu_fs)",
-    "IF ((cpu_mem IS high_memory) OR (cpu_load IS overload_load)) THEN (cpu_fs IS medium_cpu_fs)",
-	"IF ((cpu_mem IS high_memory) OR (NOT(cpu_load IS overload_load))) THEN (cpu_fs IS high_cpu_fs)"
+CPU_LOAD.add_linguistic_variable("cpu_load", LinguisticVariable( [CPU_LOAD_OUT_01, CPU_LOAD_OUT_02, CPU_LOAD_OUT_03], universe_of_discourse=[0,1] ))
+
+CPU_LOAD.add_rules([
+	"IF ((cpu_ut IS high) OR (cpu_mem IS high)) THEN (cpu_load IS high)",
+	"IF ((cpu_ut IS medium) AND (cpu_mem IS medium)) THEN (cpu_load IS medium)",
+	"IF ((cpu_ut IS medium) AND (cpu_mem IS low)) THEN (cpu_load IS low)",
+	"IF ((cpu_ut IS low) AND ((cpu_mem IS low) OR (cpu_mem IS medium))) THEN (cpu_load IS low)"
     ])
 
 
@@ -60,12 +61,17 @@ NET_Output_03 = FuzzySet( points=[[0.65, 0.],  [0.75, 1.], [1, 1]], term="high" 
 
 FS_NET_US.add_linguistic_variable("net_output", LinguisticVariable( [NET_Output_01, NET_Output_02, NET_Output_03] ))
 
-FS_NET_US.set_crisp_output_value("low", 0)
-FS_NET_US.set_crisp_output_value("medium", 0.5)
-FS_NET_US.set_crisp_output_value("high", 1)
+FS_NET_US_OUT_01 = TriangleFuzzySet(0,0,0.5,   term="low")
+FS_NET_US_OUT_02 = TriangleFuzzySet(0,0.5,1,   term="medium")
+FS_NET_US_OUT_03 = TriangleFuzzySet(0.5,1,1,   term="high")
+
+FS_NET_US.add_linguistic_variable("net_us_fs", LinguisticVariable( [FS_NET_US_OUT_01, FS_NET_US_OUT_02, FS_NET_US_OUT_03], universe_of_discourse=[0,1]))
 
 FS_NET_US.add_rules([
-	
+	"IF ((net_input IS low) OR (net_output IS low)) THEN (net_us_fs IS low)",
+	"IF ((net_input IS medium) AND (net_output IS high)) THEN (net_us_fs IS medium)",
+	"IF (((net_input IS medium) OR (net_input IS high)) AND (net_output IS medium)) THEN (net_us_fs IS medium)",
+	"IF ((net_input IS high) AND (net_output IS high)) THEN (net_us_fs IS high)"
 	])
 
 
@@ -82,41 +88,59 @@ NET_Latency_03 = FuzzySet( points=[[0.65, 0.],  [0.75, 1.], [1, 1]], term="high"
 
 FS_NET_AV.add_linguistic_variable("net_latency", LinguisticVariable( [NET_Latency_01, NET_Latency_02, NET_Latency_03] ))
 
-FS_NET_AV.set_crisp_output_value("low", 0)
-FS_NET_AV.set_crisp_output_value("medium", 0.5)
-FS_NET_AV.set_crisp_output_value("high", 1)
+FS_NET_AV_OUT_01 = TriangleFuzzySet(0,0,0.5,   term="low")
+FS_NET_AV_OUT_02 = TriangleFuzzySet(0,0.5,1,   term="medium")
+FS_NET_AV_OUT_03 = TriangleFuzzySet(0.5,1,1,   term="high")
+
+FS_NET_AV.add_linguistic_variable("net_av_fs", LinguisticVariable( [FS_NET_AV_OUT_01, FS_NET_AV_OUT_02, FS_NET_AV_OUT_03], universe_of_discourse=[0,1] ))
 
 FS_NET_AV.add_rules([
-	
+	"IF ((net_bandwidth IS low) OR (net_latency IS high)) THEN (net_av_fs IS low)",
+	"IF (((net_latency IS medium) OR (net_latency IS low)) AND (net_bandwidth IS medium)) THEN (net_av_fs IS medium)",
+	"IF (((net_latency IS medium) OR (net_latency IS low)) AND (net_bandwidth IS high)) THEN (net_av_fs IS high)"
 	])
 
 
-# FIS Fuzzy System
+# FS_CLPV Fuzzy System
 FS_CPU_01 = FuzzySet( points=[[0, 1.],  [0.25, 1.], [0.35, 0]], term="low" )
 FS_CPU_02 = FuzzySet( points=[[0.25, 0.],  [0.35, 1.],  [0.65, 1], [0.75, 0]], term="medium" )
 FS_CPU_03 = FuzzySet( points=[[0.65, 0.],  [0.75, 1.], [1, 1]], term="high" )
 
-FIS.add_linguistic_variable("fs_cpu", LinguisticVariable( [FS_CPU_01, FS_CPU_02, FS_CPU_03] ))
+FS_CLPV.add_linguistic_variable("fs_cpu", LinguisticVariable( [FS_CPU_01, FS_CPU_02, FS_CPU_03] ))
 
 FS_NET_US_01 = FuzzySet( points=[[0, 1.],  [0.25, 1.], [0.35, 0]], term="low" )
 FS_NET_US_02 = FuzzySet( points=[[0.25, 0.],  [0.35, 1.],  [0.65, 1], [0.75, 0]], term="medium" )
 FS_NET_US_03 = FuzzySet( points=[[0.65, 0.],  [0.75, 1.], [1, 1]], term="high" )
 
-FIS.add_linguistic_variable("fs_net_us", LinguisticVariable( [FS_NET_US_01, FS_NET_US_02, FS_NET_US_03] ))
+FS_CLPV.add_linguistic_variable("fs_net_us", LinguisticVariable( [FS_NET_US_01, FS_NET_US_02, FS_NET_US_03] ))
 
 FS_NET_AV_01 = FuzzySet( points=[[0, 1.],  [0.25, 1.], [0.35, 0]], term="low" )
 FS_NET_AV_02 = FuzzySet( points=[[0.25, 0.],  [0.35, 1.],  [0.65, 1], [0.75, 0]], term="medium" )
 FS_NET_AV_03 = FuzzySet( points=[[0.65, 0.],  [0.75, 1.], [1, 1]], term="high" )
 
-FIS.add_linguistic_variable("fs_net_av", LinguisticVariable( [FS_NET_AV_01, FS_NET_AV_02, FS_NET_AV_03] ))
+FS_CLPV.add_linguistic_variable("fs_net_av", LinguisticVariable( [FS_NET_AV_01, FS_NET_AV_02, FS_NET_AV_03] ))
 
-FIS.set_crisp_output_value("low", 0)
-FIS.set_crisp_output_value("medium", 0.5)
-FIS.set_crisp_output_value("high", 1)
+CPLV_OUT_01 = TriangleFuzzySet(-1,-1,0,   term="remote")
+CPLV_OUT_02 = TriangleFuzzySet(-1,0,1,   term="static")
+CPLV_OUT_03 = TriangleFuzzySet(0,1,1,   term="local")
 
-FIS.add_rules([
-	
-	])
+FS_CLPV.add_linguistic_variable("clpv", LinguisticVariable( [CPLV_OUT_01, CPLV_OUT_02, CPLV_OUT_03], universe_of_discourse=[-1,1] ))
+
+
+FS_CLPV.add_rules([
+    "IF (fs_cpu IS low) THEN (clpv IS local)",
+    "IF ((fs_cpu IS medium) AND ((fs_net_av IS low) OR (fs_net_us IS high))) THEN (clpv IS local)",
+    "IF ((fs_cpu IS medium) AND ((fs_net_av IS medium) AND (fs_net_us IS medium))) THEN (clpv IS local)",
+    "IF ((fs_cpu IS medium) AND ((fs_net_av IS high) AND (fs_net_us IS medium))) THEN (clpv IS static)",
+    "IF ((fs_cpu IS medium) AND (((fs_net_av IS high) OR(fs_net_av IS medium)) AND (fs_net_us IS low))) THEN (clpv IS static)",
+    "IF ((fs_cpu IS high) AND ((fs_net_av IS low) AND (fs_net_us IS high) ) ) THEN (clpv IS local)",
+    "IF ((fs_cpu IS high) AND ((fs_net_av IS medium) AND (fs_net_us IS medium) ) ) THEN (clpv IS static)",
+    "IF ((fs_cpu IS high) AND ((fs_net_av IS high) AND (fs_net_us IS medium) ) ) THEN (clpv IS remote)",
+    "IF ((fs_cpu IS high) AND (((fs_net_av IS medium) OR (fs_net_av IS high)) AND (fs_net_us IS high) ) ) THEN (clpv IS static)",
+    "IF ((fs_cpu IS high) AND (((fs_net_us IS medium) OR (fs_net_us IS low)) AND (fs_net_av IS low) ) ) THEN (clpv IS static)",
+    "IF ((fs_cpu IS high) AND (((fs_net_av IS medium) OR (fs_net_av IS high)) AND (fs_net_us IS low) ) ) THEN (clpv IS remote)"
+])
+
 
 # Calculate the outputs
 
@@ -124,26 +148,33 @@ FIS.add_rules([
 # Net Usage FS set Inputs/ get Output 
 for i in range(4):
 	# CPU FS set Inputs/ get Output 
-	FS_CPU.set_variable("cpu_load", cpu_load)
-	FS_CPU.set_variable("cpu_mem", cpu_mem)
+	CPU_LOAD.set_variable("cpu_ut", cpu_ut)
+	CPU_LOAD.set_variable("cpu_mem", cpu_mem)
 
-	fs_cpu = FS_CPU.Sugeno_inference("cpu_fs")
+	cpu_load = CPU_LOAD.inference()
+	cpu_load_output = cpu_load["cpu_load"]
 
 	# Net Usage FS set Inputs/ get Output 
 	FS_NET_US.set_variable("net_input", input_throughput)
 	FS_NET_US.set_variable("net_output", output_throughput)
 
-	fs_net_us = FS_NET_US.Sugeno_inference("net_us_fs")
+	fs_net_us = FS_NET_US.inference()
+	fs_net_us_output = fs_net_us["net_us_fs"]
 
 	# Net Usage FS set Inputs/ get Output 
 	FS_NET_AV.set_variable("net_latency", latency)
 	FS_NET_AV.set_variable("net_bandwidth", available_bw)
 
-	fs_net_av = FS_NET_AV.Sugeno_inference("net_av_fs")
+	fs_net_av = FS_NET_AV.inference(["net_av_fs"])
+	fs_net_av_output = fs_net_av["net_av_fs"]
 
 	# Net Usage FS set Inputs/ get Output 
-	FS_NET_AV.set_variable("net_latency", latency)
-	FS_NET_AV.set_variable("net_bandwidth", available_bw)
+	FS_CLPV.set_variable("fs_cpu", cpu_load_output)
+	FS_CLPV.set_variable("fs_net_us", fs_net_us_output)
+	FS_CLPV.set_variable("fs_net_av", fs_net_av_output)
 
-	fis = FS_NET_AV.Sugeno_inference("fis")
+	clpv = FS_CLPV.inference(["clpv"])
+	clpv_ouput = clpv["clpv"]
+
+	print(clpv_ouput)
 
