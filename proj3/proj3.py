@@ -35,9 +35,9 @@ creator.create("Individual", list, fitness=creator.FitnessMin)
 
 toolbox = base.Toolbox()
 # Attribute generator 
-toolbox.register("attr_int", random.randint, 1, M_POINT_IN)
+toolbox.register("attr_int", random.sample, range(N_POINTS), N_POINTS)
 # Structure initializers
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_int, 100)
+toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.attr_int)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("evaluate", evalTSP)
@@ -68,7 +68,7 @@ def main():
     # Count the time
     start_time = time.time()
     # Begin the evolution
-    while max(fits) < 100 and g < 100: # g < 1000
+    while g < 100: # max(fits) < 100 and g < 100
         # A new generation
         g = g + 1
         print("-- Generation %i --" % g)
@@ -105,6 +105,11 @@ def main():
         print("  Max %s" % max(fits))
         print("  Avg %s" % mean)
         print("  Std %s" % std)
+
+        min_id = fits.index(min(fits))
+        #print(min_id)
+        print(pop[min_id])
+        print(evalTSP(pop[min_id]))
 
     end_time  = time.time()
     algo_time = end_time - start_time
