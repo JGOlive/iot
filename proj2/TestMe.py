@@ -31,14 +31,15 @@ Template_FuzzySet_03 = FuzzySet( points=[[0.5, 0.],  [0.75, 1.],  [1, 1.], [1, 0
 
 # Small Block output template
 
-Template_OUT_Small_01 = FuzzySet( points=[[0, 0], [0, 1.],  [0.25, 1.], [0.5, 0]], term="low" )
+Template_OUT_Small_01 = FuzzySet( points=[[0, 0], [0, 1.],  [0.20, 1.], [0.5, 0]], term="low" )
 Template_OUT_Small_02 = FuzzySet( points=[[0.2, 0.],  [0.4, 1.],  [0.6, 1], [0.8, 0]], term="medium")
-Template_OUT_Small_03 = FuzzySet( points=[[0.5, 0.],  [0.75, 1.],  [1, 1.], [1, 0]], term="high" )
+Template_OUT_Small_03 = FuzzySet( points=[[0.5, 0.],  [0.80, 1.],  [1, 1.], [1, 0]], term="high" )
 '''
 CPU_LOAD_OUT_01 = Template_OUT_Small_01
 CPU_LOAD_OUT_02 = Template_OUT_Small_02
 CPU_LOAD_OUT_03 = Template_OUT_Small_03
 '''
+# 3 mbf, 5 wouldn't be so predictable to "debug"
 Template_OUT_Big_01 = FuzzySet( points=[[-1, 0], [-1, 1.],  [-0.8, 1.], [-0.5, 0]], term="remote" )
 #Template_OUT_Big_02 = FuzzySet( points=[, term="semi_static" )
 Template_OUT_Big_03 = FuzzySet( points=[[-0.6, 0], [-0.2, 1.],  [0.2, 1.], [0.6, 0]], term="static" )
