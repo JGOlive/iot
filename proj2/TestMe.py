@@ -1,3 +1,5 @@
+# Ficheiro para experimentar coisas
+
 import pandas as pd
 from simpful import *
 
@@ -74,10 +76,11 @@ FS_NET_US_OUT_03 = TriangleFuzzySet(0.5,1,1,   term="high")
 FS_NET_US.add_linguistic_variable("net_us_fs", LinguisticVariable( [FS_NET_US_OUT_01, FS_NET_US_OUT_02, FS_NET_US_OUT_03], universe_of_discourse=[0,1]))
 
 FS_NET_US.add_rules([
-	"IF ((net_input IS low) OR (net_output IS low)) THEN (net_us_fs IS low)",
-	"IF ((net_input IS medium) AND (net_output IS high)) THEN (net_us_fs IS medium)",
-	"IF (((net_input IS medium) OR (net_input IS high)) AND (net_output IS medium)) THEN (net_us_fs IS medium)",
-	"IF ((net_input IS high) AND (net_output IS high)) THEN (net_us_fs IS high)"
+	"IF ((net_input IS low) OR (net_output IS high)) THEN (net_us_fs IS low)",
+	"IF ((net_input IS medium) AND (net_output IS medium)) THEN (net_us_fs IS low)",
+	"IF ((net_input IS medium) AND (net_output IS low)) THEN (net_us_fs IS medium)",
+	"IF ((net_input IS high) AND (net_output IS medium)) THEN (net_us_fs IS medium)",
+	"IF ((net_input IS high) AND (net_output IS low)) THEN (net_us_fs IS high)"
 	])
 
 
@@ -139,12 +142,11 @@ FS_CLPV.add_rules([
     "IF ((fs_cpu IS medium) AND ((fs_net_av IS medium) AND (fs_net_us IS medium))) THEN (clpv IS local)",
     "IF ((fs_cpu IS medium) AND ((fs_net_av IS high) AND (fs_net_us IS medium))) THEN (clpv IS static)",
     "IF ((fs_cpu IS medium) AND (((fs_net_av IS high) OR(fs_net_av IS medium)) AND (fs_net_us IS low))) THEN (clpv IS static)",
-    "IF ((fs_cpu IS high) AND ((fs_net_av IS low) AND (fs_net_us IS high) ) ) THEN (clpv IS local)",
-    "IF ((fs_cpu IS high) AND ((fs_net_av IS medium) AND (fs_net_us IS medium) ) ) THEN (clpv IS static)",
-    "IF ((fs_cpu IS high) AND ((fs_net_av IS high) AND (fs_net_us IS medium) ) ) THEN (clpv IS remote)",
-    "IF ((fs_cpu IS high) AND (((fs_net_av IS medium) OR (fs_net_av IS high)) AND (fs_net_us IS high) ) ) THEN (clpv IS static)",
-    "IF ((fs_cpu IS high) AND (((fs_net_us IS medium) OR (fs_net_us IS low)) AND (fs_net_av IS low) ) ) THEN (clpv IS static)",
-    "IF ((fs_cpu IS high) AND (((fs_net_av IS medium) OR (fs_net_av IS high)) AND (fs_net_us IS low) ) ) THEN (clpv IS remote)"
+    "IF ((fs_cpu IS high) AND ((fs_net_av IS high) OR (fs_net_us IS low) ) ) THEN (clpv IS remote)",
+    "IF ((fs_cpu IS high) AND ((fs_net_av IS medium) AND (fs_net_us IS medium) ) ) THEN (clpv IS remote)",
+    "IF ((fs_cpu IS high) AND ((fs_net_av IS low) AND (fs_net_us IS medium) ) ) THEN (clpv IS static)",
+    "IF ((fs_cpu IS high) AND ((fs_net_av IS medium) AND (fs_net_us IS high) ) ) THEN (clpv IS static)",
+    "IF ((fs_cpu IS high) AND ((fs_net_av IS low) AND (fs_net_us IS high) ) ) THEN (clpv IS local)"
 ])
 
 
