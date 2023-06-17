@@ -4,17 +4,22 @@ import pandas as pd
 from simpful import *
 
 # Pandas File
-df = pd.read_csv("Project2_SampleData.csv")
-print(df[["MemoryUsage","ProcessorLoad","InpNetThroughput","OutNetThroughput","OutBandwidth","Latency","CLPVariation"]])
+
+# Project2_SampleData.csv
+#df = pd.read_csv("Project2_SampleData.csv")
+#print(df[["MemoryUsage","ProcessorLoad","InpNetThroughput","OutNetThroughput","OutBandwidth","Latency","CLPVariation"]])
+
+# Lab10-Proj2_TestS.csv
+df = pd.read_csv("Lab10-Proj2_TestS.csv")
 
 # Inputs (should be extraced from the pandas dataframe)
-
-cpu_ut = 0.95
-cpu_mem = 0.95
-input_throughput = 0.1
-output_throughput = 0.1
-latency = 0.1
-available_bw = 0.9
+mem_data = df["MemoryUsage"]
+proc_data = df["ProcessorLoad"]
+input_data = df["InpNetThroughput"]
+output_data = df["OutNetThroughput"]
+bandwidth_data = df["OutBandwidth"]
+latency_data = df["Latency"]
+clpv_data = df["CLPVariation"]
 
 # Fuzzy Systems
 
@@ -173,15 +178,6 @@ FS_CLPV.add_rules([
 
 
 # Calculate the outputs
-
-mem_data = df["MemoryUsage"]
-proc_data = df["ProcessorLoad"]
-input_data = df["InpNetThroughput"]
-output_data = df["OutNetThroughput"]
-bandwidth_data = df["OutBandwidth"]
-latency_data = df["Latency"]
-clpv_data = df["CLPVariation"]
-
 
 for i in range(len(mem_data)):
 
