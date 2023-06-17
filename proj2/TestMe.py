@@ -40,7 +40,9 @@ CPU_LOAD_OUT_02 = Template_OUT_Small_02
 CPU_LOAD_OUT_03 = Template_OUT_Small_03
 '''
 Template_OUT_Big_01 = FuzzySet( points=[[-1, 0], [-1, 1.],  [-0.8, 1.], [-0.5, 0]], term="remote" )
+#Template_OUT_Big_02 = FuzzySet( points=[, term="semi_static" )
 Template_OUT_Big_03 = FuzzySet( points=[[-0.6, 0], [-0.2, 1.],  [0.2, 1.], [0.6, 0]], term="static" )
+#Template_OUT_Big_02 = FuzzySet( points=[, term="semi_local" )
 Template_OUT_Big_05 = FuzzySet( points=[[ 0.5, 0], [ 0.8, 1.],  [ 1, 1.], [1, 0]], term="local" )
 
 # CPU Fuzzy System
