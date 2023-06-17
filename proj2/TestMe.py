@@ -27,7 +27,21 @@ FS_CLPV = FuzzySystem()
 
 Template_FuzzySet_01 = FuzzySet( points=[[0, 0], [0, 1.],  [0.25, 1.], [0.5, 0]], term="low" )
 Template_FuzzySet_02 = FuzzySet( points=[[0.2, 0.],  [0.4, 1.],  [0.6, 1], [0.8, 0]], term="medium")
-Template_FuzzySet_03 = FuzzySet( points=[[0.5, 0.],  [0.65, 1.],  [1, 1.], [1, 0]], term="high" )
+Template_FuzzySet_03 = FuzzySet( points=[[0.5, 0.],  [0.75, 1.],  [1, 1.], [1, 0]], term="high" )
+
+# Small Block output template
+
+Template_OUT_Small_01 = FuzzySet( points=[[0, 0], [0, 1.],  [0.25, 1.], [0.5, 0]], term="low" )
+Template_OUT_Small_02 = FuzzySet( points=[[0.2, 0.],  [0.4, 1.],  [0.6, 1], [0.8, 0]], term="medium")
+Template_OUT_Small_03 = FuzzySet( points=[[0.5, 0.],  [0.75, 1.],  [1, 1.], [1, 0]], term="high" )
+'''
+CPU_LOAD_OUT_01 = Template_OUT_Small_01
+CPU_LOAD_OUT_02 = Template_OUT_Small_02
+CPU_LOAD_OUT_03 = Template_OUT_Small_03
+'''
+Template_OUT_Big_01 = FuzzySet( points=[[-1, 0], [-1, 1.],  [-0.8, 1.], [-0.5, 0]], term="remote" )
+Template_OUT_Big_03 = FuzzySet( points=[[-0.6, 0], [-0.2, 1.],  [0.2, 1.], [0.6, 0]], term="static" )
+Template_OUT_Big_05 = FuzzySet( points=[[ 0.5, 0], [ 0.8, 1.],  [ 1, 1.], [1, 0]], term="local" )
 
 # CPU Fuzzy System
 CPU_Ut_01 = FuzzySet( points=[[0, 1.],  [0.40, 1.],  [0.65, 0]], term="low" )
@@ -42,9 +56,9 @@ CPU_Mem_03 = FuzzySet( points=[[0.75, 0.],  [0.85, 1.], [1, 1]], term="high" )
 
 CPU_LOAD.add_linguistic_variable("cpu_mem", LinguisticVariable( [CPU_Mem_01, CPU_Mem_02, CPU_Mem_03] ))
 
-CPU_LOAD_OUT_01 = TriangleFuzzySet(0,0,0.5,   term="low")
-CPU_LOAD_OUT_02 = TriangleFuzzySet(0,0.5,1,   term="medium")
-CPU_LOAD_OUT_03 = TriangleFuzzySet(0.5,1,1,   term="high")
+CPU_LOAD_OUT_01 = Template_OUT_Small_01
+CPU_LOAD_OUT_02 = Template_OUT_Small_02
+CPU_LOAD_OUT_03 = Template_OUT_Small_03
 
 CPU_LOAD.add_linguistic_variable("cpu_load", LinguisticVariable( [CPU_LOAD_OUT_01, CPU_LOAD_OUT_02, CPU_LOAD_OUT_03], universe_of_discourse=[0,1] ))
 
@@ -69,9 +83,9 @@ NET_Output_03 = Template_FuzzySet_03
 
 FS_NET_US.add_linguistic_variable("net_output", LinguisticVariable( [NET_Output_01, NET_Output_02, NET_Output_03] ))
 
-FS_NET_US_OUT_01 = TriangleFuzzySet(0,0,0.5,   term="low")
-FS_NET_US_OUT_02 = TriangleFuzzySet(0,0.5,1,   term="medium")
-FS_NET_US_OUT_03 = TriangleFuzzySet(0.5,1,1,   term="high")
+FS_NET_US_OUT_01 = Template_OUT_Small_01
+FS_NET_US_OUT_02 = Template_OUT_Small_02
+FS_NET_US_OUT_03 = Template_OUT_Small_03
 
 FS_NET_US.add_linguistic_variable("net_us_fs", LinguisticVariable( [FS_NET_US_OUT_01, FS_NET_US_OUT_02, FS_NET_US_OUT_03], universe_of_discourse=[0,1]))
 
@@ -97,9 +111,9 @@ NET_Latency_03 = Template_FuzzySet_03
 
 FS_NET_AV.add_linguistic_variable("net_latency", LinguisticVariable( [NET_Latency_01, NET_Latency_02, NET_Latency_03] ))
 
-FS_NET_AV_OUT_01 = TriangleFuzzySet(0,0,0.5,   term="low")
-FS_NET_AV_OUT_02 = TriangleFuzzySet(0,0.5,1,   term="medium")
-FS_NET_AV_OUT_03 = TriangleFuzzySet(0.5,1,1,   term="high")
+FS_NET_AV_OUT_01 = Template_OUT_Small_01
+FS_NET_AV_OUT_02 = Template_OUT_Small_02
+FS_NET_AV_OUT_03 = Template_OUT_Small_03
 
 FS_NET_AV.add_linguistic_variable("net_av_fs", LinguisticVariable( [FS_NET_AV_OUT_01, FS_NET_AV_OUT_02, FS_NET_AV_OUT_03], universe_of_discourse=[0,1] ))
 
@@ -129,11 +143,11 @@ FS_NET_AV_03 = Template_FuzzySet_03
 
 FS_CLPV.add_linguistic_variable("fs_net_av", LinguisticVariable( [FS_NET_AV_01, FS_NET_AV_02, FS_NET_AV_03] ))
 
-CPLV_OUT_01 = TriangleFuzzySet(-1,-1,0,   term="remote")
-CPLV_OUT_02 = TriangleFuzzySet(-1,0,1,   term="static")
-CPLV_OUT_03 = TriangleFuzzySet(0,1,1,   term="local")
+CPLV_OUT_01 = Template_OUT_Big_01
+CPLV_OUT_03 = Template_OUT_Big_03
+CPLV_OUT_05 = Template_OUT_Big_05
 
-FS_CLPV.add_linguistic_variable("clpv", LinguisticVariable( [CPLV_OUT_01, CPLV_OUT_02, CPLV_OUT_03], universe_of_discourse=[-1,1] ))
+FS_CLPV.add_linguistic_variable("clpv", LinguisticVariable( [CPLV_OUT_01, CPLV_OUT_03, CPLV_OUT_05], universe_of_discourse=[-1,1] ))
 
 
 FS_CLPV.add_rules([
