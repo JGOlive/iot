@@ -78,7 +78,7 @@ CPU_LOAD.add_rules([
     ])
 
 
-# Network Usage
+# Data to Analyze
 NET_Input_01 = Template_FuzzySet_01
 NET_Input_02 = Template_FuzzySet_02
 NET_Input_03 = Template_FuzzySet_03
