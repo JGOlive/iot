@@ -1,6 +1,7 @@
 import random
 import time
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from deap import base
 from deap import creator
@@ -41,7 +42,7 @@ toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.at
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("evaluate", evalTSP)
-toolbox.register("mate", tools.cxOrdered) #cxTwoPoint
+toolbox.register("mate", tools.cxOrdered) #the order of elements is critical
 toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.05) # indpb = 0.05
 toolbox.register("select", tools.selTournament, tournsize=3)
 
@@ -64,14 +65,18 @@ def main():
 
     # Variable keeping track of the number of generations
     g = 0
+    N_GENS = 500
 
-    # Hall of Fame
+    # Hall of Fame and vec for figure
     hof = tools.HallOfFame(maxsize=5)
+    min_v = [0] * N_GENS
+    max_v = [0] * N_GENS
+    mean_v = [0] * N_GENS
 
     # Count the time
     start_time = time.time()
     # Begin the evolution
-    while g < 100: # max(fits) < 100 and g < 100
+    while g < N_GENS: # max(fits) < 100 and g < 100
         # A new generation
         g = g + 1
         print("-- Generation %i --" % g)
@@ -104,6 +109,10 @@ def main():
         sum2 = sum(x*x for x in fits)
         std = abs(sum2 / length - mean**2)**0.5
 
+        min_v[g-1] = min(fits)
+        max_v[g-1] = max(fits)
+        mean_v[g-1] = mean
+
         print("  Min %s" % min(fits))
         print("  Max %s" % max(fits))
         print("  Avg %s" % mean)
@@ -120,6 +129,14 @@ def main():
     for i in range(len(hof)):
         print("Sequence",i,": Distance", evalTSP(hof[i]))
         print(hof[i])
+
+    plt.plot(range(1,N_GENS+1),min_v, label = "Min")
+    plt.plot(range(1,N_GENS+1),max_v, label = "Max")
+    plt.plot(range(1,N_GENS+1),mean_v, label = "Mean")
+    plt.ylabel("Distance")
+    plt.xlabel("Generation")
+    plt.legend()
+    plt.show()
 
     end_time  = time.time()
     algo_time = end_time - start_time
