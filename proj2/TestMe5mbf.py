@@ -49,11 +49,11 @@ CPU_LOAD_OUT_02 = Template_OUT_Small_02
 CPU_LOAD_OUT_03 = Template_OUT_Small_03
 '''
 # 3 mbf, 5 wouldn't be so predictable to "debug"
-Template_OUT_Big_01 = FuzzySet(points=[[-1, 0], [-1, 1.], [-0.7, 1.], [-0.6, 0]], term="remote")
-Template_OUT_Big_02 = FuzzySet(points=[[-0.8, 0], [-0.6, 1.], [-0.4, 1.], [-0.2, 0]], term="semi_remote")
-Template_OUT_Big_03 = FuzzySet(points=[[-0.3, 0], [-0.1, 1.], [0.1, 1.], [0.3, 0]], term="static")
-Template_OUT_Big_04 = FuzzySet(points=[[0.2, 0], [0.4, 1.], [0.6, 1.], [0.8, 0]], term="semi_local")
-Template_OUT_Big_05 = FuzzySet(points=[[0.7, 0], [0.8, 1.], [1, 1.], [1, 0]], term="local")
+Template_OUT_Big_01 = FuzzySet(points=[[-1, 0], [-1, 1.], [-0.8, 1.], [-0.6, 0]], term="remote")
+Template_OUT_Big_02 = FuzzySet(points=[[-0.9, 0], [-0.6, 1.], [-0.4, 1.], [-0.1, 0]], term="semi_remote")
+Template_OUT_Big_03 = FuzzySet(points=[[-0.45, 0], [-0.1, 1.], [0.1, 1.], [0.45, 0]], term="static")
+Template_OUT_Big_04 = FuzzySet(points=[[0.1, 0], [0.4, 1.], [0.6, 1.], [0.9, 0]], term="semi_local")
+Template_OUT_Big_05 = FuzzySet(points=[[0.6, 0], [0.8, 1.], [1, 1.], [1, 0]], term="local")
 
 Template_OUT_Big = [Template_OUT_Big_01, Template_OUT_Big_02, Template_OUT_Big_03, Template_OUT_Big_04, Template_OUT_Big_05]
 
@@ -175,15 +175,15 @@ FS_CLPV.add_rules([
     "IF ((fs_cpu IS medium) AND ((fs_net_av IS high) AND (fs_net_us IS low) ) )     THEN (clpv IS remote)",
     "IF ((fs_cpu IS medium) AND ((fs_net_av IS high) AND (fs_net_us IS medium) ) )  THEN (clpv IS static)",
     "IF ((fs_cpu IS medium) AND ((fs_net_av IS high) AND (fs_net_us IS high) ) )    THEN (clpv IS local)",
-    "IF ((fs_cpu IS high) AND ((fs_net_av IS low) AND (fs_net_us IS low) ) )      THEN (clpv IS remote)",
+    "IF ((fs_cpu IS high) AND ((fs_net_av IS low) AND (fs_net_us IS low) ) )      THEN (clpv IS semi_remote)",
     "IF ((fs_cpu IS high) AND ((fs_net_av IS low) AND (fs_net_us IS medium) ) )   THEN (clpv IS static)",
     "IF ((fs_cpu IS high) AND ((fs_net_av IS low) AND (fs_net_us IS high) ) )     THEN (clpv IS local)",
     "IF ((fs_cpu IS high) AND ((fs_net_av IS medium) AND (fs_net_us IS low) ) )   THEN (clpv IS remote)",
-    "IF ((fs_cpu IS high) AND ((fs_net_av IS medium) AND (fs_net_us IS medium) ) ) THEN (clpv IS remote)",
+    "IF ((fs_cpu IS high) AND ((fs_net_av IS medium) AND (fs_net_us IS medium) ) ) THEN (clpv IS semi_remote)",
     "IF ((fs_cpu IS high) AND ((fs_net_av IS medium) AND (fs_net_us IS high) ) )  THEN (clpv IS static)",
     "IF ((fs_cpu IS high) AND ((fs_net_av IS high) AND (fs_net_us IS low) ) )     THEN (clpv IS remote)",
     "IF ((fs_cpu IS high) AND ((fs_net_av IS high) AND (fs_net_us IS medium) ) )  THEN (clpv IS remote)",
-    "IF ((fs_cpu IS high) AND ((fs_net_av IS high) AND (fs_net_us IS high) ) )    THEN (clpv IS remote)",
+    "IF ((fs_cpu IS high) AND ((fs_net_av IS high) AND (fs_net_us IS high) ) )    THEN (clpv IS semi_remote)",
 ])
 
 

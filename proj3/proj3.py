@@ -65,6 +65,9 @@ def main():
     # Variable keeping track of the number of generations
     g = 0
 
+    # Hall of Fame
+    hof = tools.HallOfFame(maxsize=5)
+
     # Count the time
     start_time = time.time()
     # Begin the evolution
@@ -108,8 +111,15 @@ def main():
 
         min_id = fits.index(min(fits))
         #print(min_id)
-        print(pop[min_id])
-        print(evalTSP(pop[min_id]))
+        print("Best sequence from this generation:",pop[min_id])
+
+        # Update HoF
+        hof.update(pop)
+
+    print("Best 5 individuals\n")
+    for i in range(len(hof)):
+        print("Sequence",i,": Distance", evalTSP(hof[i]))
+        print(hof[i])
 
     end_time  = time.time()
     algo_time = end_time - start_time
