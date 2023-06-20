@@ -130,6 +130,10 @@ def main():
         print("Sequence",i,": Distance", evalTSP(hof[i]))
         print(hof[i])
 
+    end_time  = time.time()
+    algo_time = end_time - start_time
+    print("Algotithm execution time:", algo_time)
+
     plt.plot(range(1,N_GENS+1),min_v, label = "Min")
     plt.plot(range(1,N_GENS+1),max_v, label = "Max")
     plt.plot(range(1,N_GENS+1),mean_v, label = "Mean")
@@ -138,9 +142,6 @@ def main():
     plt.legend()
     plt.show()
 
-    end_time  = time.time()
-    algo_time = end_time - start_time
-    print("Algotithm execution time:", algo_time)
 
 if __name__ == "__main__":
     main()
