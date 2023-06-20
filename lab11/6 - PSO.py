@@ -25,7 +25,6 @@ creator.create("Particle", list, fitness=creator.FitnessMax, speed=list,
     smin=None, smax=None, best=None)
 
 def generate(size, pmin, pmax, smin, smax):
-    part = creator.Particle()
     part = creator.Particle(random.uniform(pmin, pmax) for _ in range(size))
     part.speed = [random.uniform(smin, smax) for _ in range(size)]
     part.smin = smin
@@ -81,6 +80,7 @@ def main():
 
         # Print the current pair of x1 and x2
         print("Particle:", part[0], part[1])
+        print(evalOneMax(part))
 
         # Update the Hall of Fame
         hof.update(pop)
