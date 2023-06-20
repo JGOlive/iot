@@ -125,14 +125,24 @@ def main():
         # Update HoF
         hof.update(pop)
 
-    print("Best 5 individuals\n")
-    for i in range(len(hof)):
-        print("Sequence",i,": Distance", evalTSP(hof[i]))
-        print(hof[i])
-
     end_time  = time.time()
     algo_time = end_time - start_time
-    print("Algotithm execution time:", algo_time)
+    print("Algorithm execution time:", algo_time)
+
+    print("Best 5 individuals\n")
+    converted_hof = []
+    rotated_sequence = []
+    mapping = {num: f'E{num}' if num > 0 else 'C' for num in range(100)}
+    for i in range(len(hof)):
+        sequence = [mapping[num] for num in hof[i]]
+        c_index = sequence.index("C")
+        rotated_sequence = sequence[c_index:] + sequence[:c_index]
+        converted_hof.append(rotated_sequence)
+        
+    for i in range(len(hof)):
+        print("Sequence", i, ": Distance", evalTSP(hof[i]))
+        #print(hof[i])
+        print(converted_hof[i])
 
     plt.plot(range(1,N_GENS+1),min_v, label = "Min")
     plt.plot(range(1,N_GENS+1),max_v, label = "Max")
